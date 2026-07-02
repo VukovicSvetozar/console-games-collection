@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="250.0" prefWidth="400.0" style="-fx-background-color: fffb00;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="igralica.controller.UnosKljucaKontroler">
+   <children>
+      <GridPane alignment="CENTER" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <columnConstraints>
+            <ColumnConstraints prefWidth="400.0" />
+            <ColumnConstraints />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints prefHeight="250.0" vgrow="SOMETIMES" />
+            <RowConstraints prefHeight="50.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <TitledPane fx:id="tpVrstaIgre" alignment="CENTER" blendMode="MULTIPLY" collapsible="false" contentDisplay="CENTER" prefHeight="150.0" text="Vrsta igre" textAlignment="CENTER" textFill="#b53b3b">
+               <content>
+                  <AnchorPane maxWidth="360.0" prefWidth="360.0" style="-fx-background-color: fffb00;">
+                     <children>
+                        <VBox alignment="CENTER" spacing="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                           <children>
+                              <Label text="Unesite ključ" textAlignment="CENTER">
+                                 <font>
+                                    <Font name="System Bold Italic" size="12.0" />
+                                 </font>
+                              </Label>
+                              <TextField fx:id="tfKljuc" alignment="CENTER" maxWidth="300.0" prefWidth="300.0" promptText="xxxx-xxxx-xxxx-xxxx">
+                                 <font>
+                                    <Font name="System Bold Italic" size="12.0" />
+                                 </font></TextField>
+                           </children>
+                        </VBox>
+                     </children>
+                  </AnchorPane>
+               </content>
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </TitledPane>
+            <HBox alignment="CENTER" spacing="10.0" GridPane.columnSpan="2" GridPane.rowIndex="1">
+               <children>
+                  <Button fx:id="btnPotvrdi" alignment="CENTER" blendMode="GREEN" layoutX="157.0" layoutY="259.0" mnemonicParsing="false" onAction="#potvrdi" text="Potvrdi" textFill="#b53b3b" GridPane.rowIndex="4">
+                     <font>
+                        <Font name="System Bold Italic" size="13.0" />
+                     </font></Button>
+                  <Button fx:id="btnOtkazi" blendMode="GREEN" mnemonicParsing="false" onAction="#otkazi" text="Otkaži" textFill="#b53b3b" GridPane.rowIndex="4">
+                     <font>
+                        <Font name="System Bold Italic" size="13.0" />
+                     </font></Button>
+               </children>
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+            </HBox>
+         </children>
+         <padding>
+            <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+         </padding>
+      </GridPane>
+   </children>
+</AnchorPane>

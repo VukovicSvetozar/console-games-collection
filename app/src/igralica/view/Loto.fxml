@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.image.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import com.jfoenix.controls.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="600.0" prefWidth="600.0" style="-fx-background-color: fffb00;" stylesheets="@../style/Loto.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="igralica.controller.LotoKontroler">
+   <children>
+      <VBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <HBox alignment="CENTER" maxHeight="70.0" maxWidth="570.0" minHeight="70.0" minWidth="570.0" prefHeight="70.0" prefWidth="570.0">
+               <VBox.margin>
+                  <Insets bottom="10.0" />
+               </VBox.margin>
+               <children>
+                  <ImageView fitHeight="60.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../style/Loto.jpg" />
+                     </image>
+                  </ImageView>
+               </children>
+            </HBox>
+            <VBox alignment="CENTER" prefHeight="100.0" prefWidth="570.0">
+               <children>
+                  <Label alignment="CENTER" prefHeight="20.0" scaleShape="false" text="Odaberite brojeve">
+                     <font>
+                        <Font name="System Bold Italic" size="12.0" />
+                     </font>
+                  </Label>
+                  <HBox prefHeight="80.0" prefWidth="200.0" spacing="15.0">
+                     <children>
+                        <TextField fx:id="tf1" styleClass="lotoBrojevi" />
+                        <TextField fx:id="tf2" styleClass="lotoBrojevi" />
+                        <TextField fx:id="tf3" styleClass="lotoBrojevi" />
+                        <TextField fx:id="tf4" styleClass="lotoBrojevi" text=" " />
+                        <TextField fx:id="tf5" styleClass="lotoBrojevi" />
+                        <TextField fx:id="tf6" styleClass="lotoBrojevi" />
+                        <TextField fx:id="tf7" styleClass="lotoBrojevi" />
+                     </children>
+                     <VBox.margin>
+                        <Insets left="5.0" right="5.0" top="15.0" />
+                     </VBox.margin>
+                  </HBox>
+               </children>
+               <VBox.margin>
+                  <Insets bottom="10.0" top="10.0" />
+               </VBox.margin>
+            </VBox>
+            <HBox alignment="CENTER" maxHeight="50.0" maxWidth="570.0" minHeight="50.0" prefHeight="50.0" prefWidth="570.0" spacing="25.0">
+               <VBox.margin>
+                  <Insets bottom="10.0" />
+               </VBox.margin>
+               <children>
+                  <Button fx:id="btnProvjeriUnos" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#provjeriUnos" prefHeight="50.0" prefWidth="150.0" text="Provjeri unesene brojeve" textAlignment="CENTER" wrapText="true">
+                     <font>
+                        <Font name="System Bold Italic" size="12.0" />
+                     </font>
+                  </Button>
+                  <Button fx:id="btnPokreniSimulaciju" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#pokreniSimulaciju" prefHeight="50.0" prefWidth="150.0" text="Pokreni simulaciju" textAlignment="CENTER">
+                     <font>
+                        <Font name="System Bold Italic" size="12.0" />
+                     </font>
+                  </Button>
+                  <Button fx:id="btnIzadji" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#izadji" prefHeight="50.0" prefWidth="150.0" text="Izađi" textAlignment="CENTER">
+                     <font>
+                        <Font name="System Bold Italic" size="12.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin>
+                  </Button>
+               </children>
+            </HBox>
+            <VBox alignment="CENTER" maxHeight="170.0" minHeight="170.0" prefHeight="170.0">
+               <children>
+                  <Label minHeight="20.0" prefHeight="20.0" text="Izvučeni brojevi">
+                     <font>
+                        <Font name="System Bold Italic" size="12.0" />
+                     </font></Label>
+                  <TextArea fx:id="taIzvuceniBrojevi" prefHeight="130.0" prefWidth="570.0">
+                     <VBox.margin>
+                        <Insets top="10.0" />
+                     </VBox.margin>
+                  </TextArea>
+               </children>
+               <VBox.margin>
+                  <Insets bottom="10.0" />
+               </VBox.margin>
+            </VBox>
+            <HBox maxHeight="130.0" maxWidth="570.0" minHeight="130.0" minWidth="570.0" prefHeight="130.0" prefWidth="570.0">
+               <children>
+                  <TitledPane alignment="CENTER" collapsible="false" prefHeight="110.0" text="Obavještenje:">
+                     <content>
+                        <AnchorPane maxWidth="360.0" prefWidth="360.0">
+                           <children>
+                              <VBox alignment="CENTER" spacing="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                 <children>
+                                    <HBox alignment="CENTER_LEFT" maxWidth="550.0" minWidth="550.0" prefWidth="550.0" spacing="40.0">
+                                       <children>
+                                          <HBox spacing="20.0">
+                                             <children>
+                                                <Label layoutY="4.0" text="Broj pogodaka:" GridPane.columnIndex="1">
+                                                   <HBox.margin>
+                                                      <Insets top="3.0" />
+                                                   </HBox.margin>
+                                                   <font>
+                                                      <Font name="System Bold Italic" size="11.0" />
+                                                   </font>
+                                                </Label>
+                                                <Label fx:id="lblBrojPogodaka" contentDisplay="CENTER" prefHeight="25.0" prefWidth="60.0" text="0" textAlignment="CENTER">
+                                                   <font>
+                                                      <Font name="System Bold" size="13.0" />
+                                                   </font>
+                                                   <HBox.margin>
+                                                      <Insets bottom="8.0" />
+                                                   </HBox.margin>
+                                                </Label>
+                                             </children>
+                                             <HBox.margin>
+                                                <Insets left="85.0" />
+                                             </HBox.margin>
+                                          </HBox>
+                                          <HBox spacing="25.0">
+                                             <children>
+                                                <Label layoutY="4.0" text="Osvojeno poena:" GridPane.columnIndex="1">
+                                                   <HBox.margin>
+                                                      <Insets top="3.0" />
+                                                   </HBox.margin>
+                                                   <font>
+                                                      <Font name="System Bold Italic" size="11.0" />
+                                                   </font>
+                                                </Label>
+                                                <Label fx:id="lblBrojPoena" prefHeight="25.0" prefWidth="60.0" text="0" textAlignment="CENTER">
+                                                   <font>
+                                                      <Font name="System Bold" size="13.0" />
+                                                   </font>
+                                                   <HBox.margin>
+                                                      <Insets bottom="8.0" />
+                                                   </HBox.margin>
+                                                </Label>
+                                             </children>
+                                             <HBox.margin>
+                                                <Insets left="20.0" />
+                                             </HBox.margin>
+                                          </HBox>
+                                       </children>
+                                    </HBox>
+                                 </children>
+                              </VBox>
+                           </children>
+                        </AnchorPane>
+                     </content>
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets top="10.0" />
+                     </HBox.margin>
+                  </TitledPane>
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+   </children>
+   <padding>
+      <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+   </padding>
+</AnchorPane>

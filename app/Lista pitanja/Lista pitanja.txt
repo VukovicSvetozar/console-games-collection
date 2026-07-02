@@ -1,0 +1,24 @@
+// Pitanja za kviz
+
+// Format za dodavanje pitanja je sljedeci:
+// 		pitanje ; tacan odgovor ; pogresan odgovor ; pogresan odgovor ;
+
+Ime najduze stranice u pravouglom trouglu? ; hipotenuza ; kateta; aksioma;
+Oduzimas mi dah, je hit grupe? ; Colonia ; Sax ; Spektar;
+Iznad Uzica se nalazi? ; Zlatibor ; Avala ; Velebit ;
+Nadimak za Srbina iz Uzica ili okoline Uzica? ; Era ; Gedza ; Cokalija ;
+Jean Michel Jarre je? ; Klavijaturista ; Fudbaler ; Gangster ;
+Srbija se ne granici sa? ; Turskom ; Madjarskom ; Makedonijom ;
+C,E,G su note? ; C dura ; C maja ; C mola ;
+U jednom mjesecu tri subote su parnog datuma. Koji da je 25-tog u tom mjesecu? ; Ponedeljak ; Utorak ; Srijeda ;
+Promil je koji dio cjeline? ; Hiljaditi ; Stoti ; Deseti ;
+Forte je? ; Jacina zvuka ; Marka sata ; Marka automobila ;
+Zuta boja je boja? ; Ljubomore ; Inata ; Srece ;
+Pjevac grupe The Rollingstones je? ; Mick Jagger ; Lepi Cane ; Ricard Gir ;
+Sedmoro brace ima po jednu sestru. Koliko je tu ukupno djece? ; 8 ; 14 ; 21 ;
+Taxim je kraj u? ; Milanu ; Rimu ; Istanbulu ;
+Jedna lubenica je teska 4kg i jos pola lubenice. Kolika je tezina te lubenice? ; 8 kg ; 12 kg ; 6 kg ;
+Sta ce biti sutra a bilo je juce? ; Dan ; Nova Godina ; Ravnodnevnica ;
+Jedan od najpoznatijih svjetskih filozofa je? ; Georg Hegel ; Georg Bush ; Georg Harrison ;
+Flash MX je koja po redu verzija? ; Sesta ; Peta ; Cetvrta ;
+Pitagora je bio poznat po? ; Teoremi ; Dilovanju ; Zulumu ;

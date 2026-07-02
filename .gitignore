@@ -1,0 +1,12 @@
+
+# --- Eclipse IDE podešavanja ---
+.settings/
+.classpath
+.project
+
+# --- Kompajlirani Java izlaz ---
+app/bin/
+
+# --- Logovi (Eksplicitna putanja iz foldera Zabiljeske) ---
+app/Zabiljeske/log.xml*
+app/Zabiljeske/*.lck

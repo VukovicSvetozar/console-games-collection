@@ -1,0 +1,23 @@
+#tblIgra .table-column {
+  -fx-alignment: CENTER;
+}
+
+.text-area *.text {
+    -fx-text-alignment: center;
+}
+
+#ivAvatar {
+
+	 -fx-background-radius: 5.0;
+}
+
+.lotoBrojevi {
+	-fx-pref-height:40.0px;
+	-fx-text-alignment: center;
+/* 	-fx-background-color: radial-gradient(focus-distance 0.0% , center 50.0% 50.0% , radius 55.0% , aqua, #ffff00);
+
+	-fx-border-color: aqua:
+	-fx-border-radius: 50%;
+
+	*/
+}

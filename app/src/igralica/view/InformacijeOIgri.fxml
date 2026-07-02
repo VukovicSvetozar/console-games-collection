@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.image.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import com.jfoenix.controls.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane maxWidth="450.0" minWidth="450.0" prefHeight="550.0" prefWidth="450.0" style="-fx-background-color: fffb00;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="igralica.controller.InformacijeOIgriKontroler">
+   <children>
+      <VBox spacing="15.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <HBox alignment="CENTER" maxHeight="120.0" maxWidth="420.0" minHeight="120.0" minWidth="420.0" prefHeight="120.0" prefWidth="420.0">
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin>
+               <children>
+                  <ImageView fx:id="ivSlikaIgre" fitHeight="100.0" fitWidth="370.0" pickOnBounds="true" preserveRatio="true" />
+               </children>
+            </HBox>
+            <VBox alignment="CENTER" maxHeight="150.0" minHeight="150.0" prefHeight="150.0">
+               <children>
+                  <Label minHeight="20.0" prefHeight="20.0">
+                     <font>
+                        <Font name="System Bold Italic" size="12.0" />
+                     </font></Label>
+                  <TextArea fx:id="taOpisIgre" blendMode="DARKEN" editable="false" prefHeight="130.0" prefWidth="570.0" style="-fx-background-color: fffb00;" wrapText="true">
+                     <VBox.margin>
+                        <Insets top="5.0" />
+                     </VBox.margin>
+                     <font>
+                        <Font name="Arial Italic" size="14.0" />
+                     </font>
+                     <padding>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                     </padding>
+                  </TextArea>
+               </children>
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin>
+            </VBox>
+            <HBox maxHeight="130.0" maxWidth="420.0" minHeight="130.0" minWidth="420.0" prefHeight="130.0" prefWidth="420.0">
+               <children>
+                  <TitledPane alignment="CENTER" blendMode="DARKEN" collapsible="false" maxWidth="420.0" minWidth="420.0" prefHeight="110.0" prefWidth="420.0" text="Informacije o ključu">
+                     <content>
+                        <AnchorPane maxWidth="360.0" prefWidth="360.0">
+                           <children>
+                              <VBox alignment="CENTER" spacing="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                 <children>
+                                    <Label fx:id="lblInformacija">
+                                       <font>
+                                          <Font name="System Bold Italic" size="11.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </VBox>
+                           </children>
+                        </AnchorPane>
+                     </content>
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets top="10.0" />
+                     </HBox.margin>
+                  </TitledPane>
+               </children>
+            </HBox>
+            <HBox alignment="CENTER" maxHeight="50.0" maxWidth="570.0" minHeight="50.0" prefHeight="50.0" prefWidth="570.0" spacing="30.0">
+               <children>
+                  <Button fx:id="btnOtkaziIgru" alignment="CENTER" blendMode="DARKEN" contentDisplay="CENTER" mnemonicParsing="false" onAction="#otkaziIgru" prefHeight="50.0" prefWidth="150.0" text="Otkaži igru" textAlignment="CENTER" textFill="#bb1414">
+                     <font>
+                        <Font name="System Bold Italic" size="12.0" />
+                     </font>
+                  </Button>
+                  <Button fx:id="btnIzadji" alignment="CENTER" blendMode="DARKEN" contentDisplay="CENTER" mnemonicParsing="false" onAction="#izadji" prefHeight="50.0" prefWidth="150.0" text="Izađi" textAlignment="CENTER" textFill="#bb1414">
+                     <font>
+                        <Font name="System Bold Italic" size="12.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin>
+                  </Button>
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+   </children>
+   <padding>
+      <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+   </padding>
+</AnchorPane>

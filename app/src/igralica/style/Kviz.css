@@ -1,0 +1,52 @@
+.root {
+	-fx-background-color: #fffb00;
+}
+#dugme {
+	-fx-background-radius: 100.0em;
+    -fx-min-width: 600.0px;
+    -fx-min-height: 80.0px;
+    -fx-max-width: 600.0px;
+    -fx-max-height: 80.0px;
+    -fx-padding: 5.0 22.0 5.0 22.0;
+    -fx-text-alignment: center;
+}
+
+.label {
+    -fx-text-fill: maroon;
+    -fx-font-style: italic;
+}
+
+.button:hover {
+    -fx-background-color: skyblue;
+    -fx-font-size: 24.0px;
+    -fx-font-weight: bold;
+    -fx-font-style: italic;
+    -fx-text-fill: brown;
+}
+
+.button:pressed {
+  -fx-background-color: steelblue;
+}
+
+.button:focused {
+    -fx-background-insets: 0.0 0.0 0.0 0.0, 0.0, 1.0, 2.0;
+}
+.button:disabled {
+    -fx-opacity: 1.0;
+}
+
+/* Dugme je zeleno za tacan odgovor */
+.tacno {
+    -fx-background-color: #00ff00;
+    -fx-font-style: italic;
+    -fx-font-size: 24.0px;
+    -fx-font-weight: bold;
+}
+
+/* Dugme je crveno za pogresan odgovor */
+.pogresno {
+    -fx-background-color: #ff0000;
+    -fx-font-style: italic;
+    -fx-font-size: 24.0px;
+    -fx-font-weight: bold;
+}

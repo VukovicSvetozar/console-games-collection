@@ -1,0 +1,16 @@
+.root {
+	-fx-background-color: #fffb00;
+}
+
+#labela {
+	-fx-font-size: 10pt ;
+	-fx-font-weight: bold;
+	-fx-font-style: italic;
+}
+
+#dugme {
+	-fx-background-color: #ffdb00;
+	-fx-font-weight: bold;
+	-fx-font-style: italic;
+}
+
