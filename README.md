@@ -2,9 +2,11 @@
 
 **Igralica** je desktop GUI aplikacija napravljena u Javi koja korisnicima omogućava igranje jednostavnih, klasičnih igara nakon registracije, prijave na sistem i unosa odgovarajućeg licencnog ključa.
 
-Aplikacija demonstrira praktičnu primjenu objektno-orijentisanog programiranja u Javi: enkapsulaciju domenskog modela, serijalizaciju objekata, rad sa fajl-sistemom, bezbjedno čuvanje lozinki (PBKDF2 + so) i izgradnju višeprozorskog GUI-ja u JavaFX-u.
+Aplikacija demonstrira praktičnu primjenu objektno-orijentisanog programiranja u Javi: enkapsulaciju domenskog modela, serijalizaciju objekata, rad sa fajl-sistemom, bezbjedno čuvanje lozinki i izgradnju višeprozorskog GUI-ja u JavaFX-u.
 
-[![Prijava korisnika](https://github.com/VukovicSvetozar/console-games-collection/raw/main/assets/1.PNG)](/VukovicSvetozar/console-games-collection/blob/main/assets/1.PNG) [![Glavna strana aplikacije](https://github.com/VukovicSvetozar/console-games-collection/raw/main/assets/3.PNG)](/VukovicSvetozar/console-games-collection/blob/main/assets/3.PNG)
+<div align="center">
+  <img src="assets/5.png" width="30%" alt="Pogodi broj">
+</div>
 
 ---
 
@@ -42,14 +44,24 @@ Kada korisnik unese ispravan i dostupan ključ, on se trajno vezuje za njegovo k
 ### 1. Pogodi broj
 Aplikacija zamisli broj između 1 i 100, a korisnik ima **5 pokušaja** da ga pogodi uz povratnu informaciju "veći/manji". Nema gubitka bodova za promašaj — pogotkom se osvaja `100 / broj_pokušaja` bodova.
 
+<div align="center">
+  <img src="assets/8.png" width="30%" alt="Pogodi broj">
+</div>
+
+
 ### 2. Kviz
-Korisniku se postavlja **5 nasumično odabranih pitanja** iz banke od 15+ pitanja (`Lista pitanja.txt`), svako sa po 3 ponuđena odgovora. Tačan odgovor nosi +20 bodova, netačan -30 bodova, a savršen rezultat (5/5) donosi dodatnih +50 bodova bonusa.
+Korisniku se postavlja **5 nasumično odabranih pitanja**, svako sa po 3 ponuđena odgovora. Tačan odgovor nosi +20 bodova, netačan -30 bodova, a savršen rezultat (5/5) donosi dodatnih +50 bodova bonusa.
+
+<div align="center">
+  <img src="assets/10.png" width="37%" alt="Kviz">
+</div>
 
 ### 3. Loto
 Za pokretanje igre korisnik ulaže **100 bodova**. Bira 7 različitih brojeva u opsegu 1–70, nakon čega aplikacija na slučajan način izvlači 20 brojeva. Za svaki pogođeni broj se dobija `redni_broj_pogotka × 10` bodova, a pogodak svih 7 brojeva donosi dodatni bonus od 100 bodova.
 
-### 4. Moj broj *(planirano, nije implementirano)*
-U glavnoj strani postoji dugme i predviđena stavka na rang listi za ovu igru, ali njena logika (`akcijaMojBroj`, `infoMojBroj`) je za sada prazna — ostavljena kao mjesto za buduću nadogradnju.
+<div align="center">
+  <img src="assets/11.png" width="43%" alt="Loto">
+</div>
 
 ---
 
@@ -69,6 +81,11 @@ Cilj ove mehanike je da prosječan broj izgubljenih bodova u ovim igrama bude ok
 - Registracija zahtijeva jedinstveno korisničko ime, lozinku dužu od 4 karaktera (uz potvrdu lozinke) i profilnu fotografiju.
 - Lozinke se **nikad ne čuvaju u čistom tekstu**: heširaju se algoritmom `PBKDF2WithHmacSHA512` (10 000 iteracija, 256-bitni ključ) uz nasumično generisanu so, i tek tako kodovane u Base64 upisuju u `Lista korisnika.txt`.
 - Nalog i bodovi se čuvaju nezavisno od trenutne sesije, tako da se stanje profila zadržava između pokretanja aplikacije.
+
+<div align="center">
+  <img src="assets/1.png" width="43%" alt="Simulacija u radu - detalj 1">&nbsp;
+  <img src="assets/2.png" width="41%" alt="Simulacija u radu - detalj 2">
+</div>
 
 ---
 
@@ -100,16 +117,6 @@ Greške tokom rada se bilježe u `Zabiljeske/log.xml` pomoću `java.util.logging
 ## 🖥️ Pregled grafičkog interfejsa (GUI)
 
 Aplikacija je izgrađena pomoću **JavaFX**-a (FXML + CSS), sa zasebnim prozorom za svaki korak: prijavu, registraciju, glavnu stranu, unos ključa, informacije o igri i svaku pojedinačnu igru.
-
-[![Registracija korisnika](https://github.com/VukovicSvetozar/console-games-collection/raw/main/assets/2.PNG)](/VukovicSvetozar/console-games-collection/blob/main/assets/2.PNG)
-
-[![Igra Pogodi broj](https://github.com/VukovicSvetozar/console-games-collection/raw/main/assets/6.png)](/VukovicSvetozar/console-games-collection/blob/main/assets/6.png)
-[![Igra Kviz](https://github.com/VukovicSvetozar/console-games-collection/raw/main/assets/8.png)](/VukovicSvetozar/console-games-collection/blob/main/assets/8.png)
-
-[![Igra Loto](https://github.com/VukovicSvetozar/console-games-collection/raw/main/assets/9.png)](/VukovicSvetozar/console-games-collection/blob/main/assets/9.png)
-[![Rang lista i statistika](https://github.com/VukovicSvetozar/console-games-collection/raw/main/assets/10.png)](/VukovicSvetozar/console-games-collection/blob/main/assets/10.png)
-
-> Dodatni snimci ekrana (unos ključa, informacije o igri, izvoz u CSV...) nalaze se u folderu [`assets/`](assets).
 
 ---
 
