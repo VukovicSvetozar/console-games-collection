@@ -1,11 +1,17 @@
-# Igralica
+<div align="center">
+  <h1>Igralica</h1> 
+</div>
+<br>
+
+<div style="page-break-before: always;"></div>
+
 
 **Igralica** je desktop GUI aplikacija napravljena u Javi koja korisnicima omogućava igranje jednostavnih, klasičnih igara nakon registracije, prijave na sistem i unosa odgovarajućeg licencnog ključa.
 
 Aplikacija demonstrira praktičnu primjenu objektno-orijentisanog programiranja u Javi: enkapsulaciju domenskog modela, serijalizaciju objekata, rad sa fajl-sistemom, bezbjedno čuvanje lozinki i izgradnju višeprozorskog GUI-ja u JavaFX-u.
 
 <div align="center">
-  <img src="assets/5.png" width="30%" alt="Pogodi broj">
+  <img src="assets/5.png" width="50%" alt="Pogodi broj">
 </div>
 
 ---
@@ -24,6 +30,20 @@ Svaki novoregistrovani korisnik dobija **10 početnih bodova**, a bodovi se dije
 
 ---
 
+
+## 👤 Korisnički nalozi i bodovi
+
+- Registracija zahtijeva jedinstveno korisničko ime, lozinku dužu od 4 karaktera (uz potvrdu lozinke) i profilnu fotografiju.
+- Lozinke se **nikad ne čuvaju u čistom tekstu**: heširaju se algoritmom `PBKDF2WithHmacSHA512` (10 000 iteracija, 256-bitni ključ) uz nasumično generisanu so, i tek tako kodovane u Base64 upisuju u `Lista korisnika.txt`.
+- Nalog i bodovi se čuvaju nezavisno od trenutne sesije, tako da se stanje profila zadržava između pokretanja aplikacije.
+
+<div align="center">
+  <img src="assets/1.png" width="29%" alt="Simulacija u radu - detalj 1">&nbsp;
+  <img src="assets/2.png" width="41%" alt="Simulacija u radu - detalj 2">
+</div>
+
+---
+
 ## 🔑 Sistem ključeva i licenciranje igara
 
 Da bi se igra pokrenula prvi put, korisnik mora unijeti ključ namijenjen toj igri. Ključ je niz od 16 cifara u 4 grupe odvojene crticom (npr. `1111-1111-1111-1111`), a njegov tip trajanja određuje koliko dugo igra ostaje aktivna:
@@ -37,6 +57,10 @@ Da bi se igra pokrenula prvi put, korisnik mora unijeti ključ namijenjen toj ig
 
 Kada korisnik unese ispravan i dostupan ključ, on se trajno vezuje za njegovo korisničko ime i mijenja status u `AKTIVAN`. Nakon isteka trajanja ili ručnog otkazivanja igre, ključ prelazi u status `ISKORIŠĆEN` i više se ne može ponovo iskoristiti — ni od istog, ni od drugog korisnika. Set demonstracionih ključeva (za sve tri implementirane igre, u sve četiri varijante trajanja) generiše se i serijalizuje pomoću pomoćne klase `KreiranjeKjuca`.
 
+<div align="center">
+  <img src="assets/6.png" width="29%" alt="Ključevi">
+</div>
+
 ---
 
 ## 🕹️ Igre
@@ -45,7 +69,7 @@ Kada korisnik unese ispravan i dostupan ključ, on se trajno vezuje za njegovo k
 Aplikacija zamisli broj između 1 i 100, a korisnik ima **5 pokušaja** da ga pogodi uz povratnu informaciju "veći/manji". Nema gubitka bodova za promašaj — pogotkom se osvaja `100 / broj_pokušaja` bodova.
 
 <div align="center">
-  <img src="assets/8.png" width="30%" alt="Pogodi broj">
+  <img src="assets/8.png" width="25%" alt="Pogodi broj">
 </div>
 
 
@@ -76,19 +100,6 @@ Cilj ove mehanike je da prosječan broj izgubljenih bodova u ovim igrama bude ok
 
 ---
 
-## 👤 Korisnički nalozi i bodovi
-
-- Registracija zahtijeva jedinstveno korisničko ime, lozinku dužu od 4 karaktera (uz potvrdu lozinke) i profilnu fotografiju.
-- Lozinke se **nikad ne čuvaju u čistom tekstu**: heširaju se algoritmom `PBKDF2WithHmacSHA512` (10 000 iteracija, 256-bitni ključ) uz nasumično generisanu so, i tek tako kodovane u Base64 upisuju u `Lista korisnika.txt`.
-- Nalog i bodovi se čuvaju nezavisno od trenutne sesije, tako da se stanje profila zadržava između pokretanja aplikacije.
-
-<div align="center">
-  <img src="assets/1.png" width="43%" alt="Simulacija u radu - detalj 1">&nbsp;
-  <img src="assets/2.png" width="41%" alt="Simulacija u radu - detalj 2">
-</div>
-
----
-
 ## 📊 Statistika, rang lista i izvoz podataka
 
 - Za svaku igru posebno se prikazuje rang lista top 10 rezultata (pozicija, ime igrača, datum, broj bodova), sortirana silazno po broju osvojenih bodova.
@@ -111,12 +122,6 @@ Aplikacija ne koristi bazu podataka — sve se čuva na fajl-sistemu, u folderim
 | `Statistika/` | CSV izvještaji koje korisnik sačuva |
 
 Greške tokom rada se bilježe u `Zabiljeske/log.xml` pomoću `java.util.logging.FileHandler`.
-
----
-
-## 🖥️ Pregled grafičkog interfejsa (GUI)
-
-Aplikacija je izgrađena pomoću **JavaFX**-a (FXML + CSS), sa zasebnim prozorom za svaki korak: prijavu, registraciju, glavnu stranu, unos ključa, informacije o igri i svaku pojedinačnu igru.
 
 ---
 
@@ -152,27 +157,3 @@ Aplikacija je izgrađena pomoću **JavaFX**-a (FXML + CSS), sa zasebnim prozorom
 
 ---
 
-## 📁 Struktura projekta
-
-```
-app/
-├── src/igralica/
-│   ├── application/   → ulazna tačka aplikacije
-│   ├── controller/    → JavaFX kontroleri (po jedan za svaki ekran/igru)
-│   ├── dialogs/       → dijalozi (registracija, obavještenja)
-│   ├── model/         → domenski model (Korisnik, Igra, Kljuc, PitanjaZaKviz)
-│   ├── utility/       → pomoćne klase (heširanje, CSV, logovanje, putanje)
-│   ├── view/          → FXML definicije ekrana
-│   └── style/         → CSS i slike
-├── Lista korisnika/, Slike korisnika/, Bodovi korisnika/,
-│   Lista kljuceva/, Lista pitanja/, Rang lista/, Statistika/
-│                     → podaci aplikacije (vidi tabelu perzistencije)
-docs/                 → specifikacija zahtjeva, UML dijagrami, napomene o balansiranju
-assets/               → snimci ekrana za ovaj README
-```
-
----
-
-## 👥 Autori
-
-Igralica je razvijena kao semestralni projekat na **Elektrotehničkom fakultetu Univerziteta u Banjoj Luci** (Grupa 13, 2018), autora **Svetozara Vukovića** i **Daniela Crnovčića**.
