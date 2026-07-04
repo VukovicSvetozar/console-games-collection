@@ -1,83 +1,126 @@
-# ETFBL_IP Web Shop
+# Igralica
 
-*Sistem sastavljen od četiri međusobno povezane aplikacije — web shop, administratorska aplikacija, aplikacija za korisničku podršku i zajednički REST backend — rađen kao projektni zadatak iz predmeta Internet programiranje.*
+**Igralica** je desktop GUI aplikacija napravljena u Javi koja korisnicima omogućava igranje jednostavnih, klasičnih igara nakon registracije, prijave na sistem i unosa odgovarajućeg licencnog ključa.
 
-Sistem simulira malu web prodavnicu (oglasnik) po uzoru na sajtove tipa OLX/Kupujem-prodajem: korisnici objavljuju ponude u proizvoljnim kategorijama (vozila, nekretnine, računari...), pretražuju i kupuju ponude drugih korisnika, dok administrator upravlja kategorijama i korisnicima, a operater korisničke podrške odgovara na poruke.
+Aplikacija demonstrira praktičnu primjenu objektno-orijentisanog programiranja u Javi: enkapsulaciju domenskog modela, serijalizaciju objekata, rad sa fajl-sistemom, bezbjedno čuvanje lozinki (PBKDF2 + so) i izgradnju višeprozorskog GUI-ja u JavaFX-u.
 
----
-
-## 🧩 Arhitektura sistema
-
-| Modul | Uloga | Tehnologije |
-|---|---|---|
-| **WebShopAppFrontend** | Javno dostupna prodavnica (kupci i prodavci) | Angular, Angular Material |
-| **WebShopAppBackend** | Jedinstveni REST API koji koriste sva tri klijenta ispod | Spring Boot, Spring Security (JWT), Spring Data JPA |
-| **AdministratorskaAplikacija** | Upravljanje kategorijama, specifikacijama i korisnicima | JSP (Model 2 / servlet + JSP) |
-| **KorisnickaPodrska** | Pregled i odgovaranje na poruke korisnika | JSP (Model 2 / servlet + JSP) |
-
-Sve četiri aplikacije dijele **istu MySQL bazu** i **isti Spring Boot backend** — administratorska aplikacija i aplikacija za podršku ne pristupaju bazi direktno za autentifikaciju, već i one šalju zahtjev ka backend-u (`/api/autentifikacija/token-administrator`) i dobijaju JWT token, isto kao Angular klijent.
+[![Prijava korisnika](https://github.com/VukovicSvetozar/console-games-collection/raw/main/assets/1.PNG)](/VukovicSvetozar/console-games-collection/blob/main/assets/1.PNG) [![Glavna strana aplikacije](https://github.com/VukovicSvetozar/console-games-collection/raw/main/assets/3.PNG)](/VukovicSvetozar/console-games-collection/blob/main/assets/3.PNG)
 
 ---
 
-## 🛍️ Web shop aplikacija (Angular + Spring Boot)
+## 🎮 O aplikaciji
 
-- **Registracija i aktivacija:** korisnik unosi ime, prezime, grad, korisničko ime, mail, lozinku i (opciono) jedan od 37 ponuđenih avatara. Na mail se šalje nasumičan 4-cifreni PIN; nalog postaje aktivan tek unosom tačnog PIN-a na stranici za aktivaciju. Ako se neaktivan korisnik pokuša prijaviti, PIN se ponovo generiše i šalje.
-- **Prijava:** JWT autentifikacija (access + refresh token), token se čuva na klijentu i automatski dodaje na zaštićene pozive (`token.interceptor.ts`).
-- **Pregled i pretraga ponuda:** ponude su prikazane kao kartice (naslov, slika, cijena) uz straničenje (Angular Material paginator). Moguće je filtrirati po kategoriji, stanju (nov/polovan), cijeni, datumu objave, korisničkom imenu i lokaciji, kao i sortirati rezultate.
-- **Kategorije i specifični atributi:** svaka kategorija ima sopstveni skup dodatnih atributa (npr. za nekretnine: vrsta, sprat, broj kvadrata), koje definiše administrator; forma za objavljivanje ponude se dinamički prilagođava odabranoj kategoriji.
-- **Detalji ponude i pitanja:** klikom na karticu otvara se stranica sa svim informacijama, slikama i pitanjima/odgovorima koje vidi svako ko otvori ponudu (javna konverzacija, ne privatna poruka).
-- **Kupovina:** kupac bira način plaćanja — broj kartice ili naziv kurirske službe (plaćanje pouzećem) — nikad oba. Ne može se kupiti sopstvena ponuda, niti ponuda koja je već kupljena.
-- **Moje ponude:** svaki korisnik može objaviti novu ponudu (sa slikama, jedna oznaka kao naslovna/poster slika), pregledati svoje aktivne i završene ponude, obrisati svoju ponudu, kao i pregledati svoju istoriju kupovina.
-- **Profil:** korisnik može izmijeniti sve svoje podatke osim korisničkog imena.
-- **Korisnička podrška:** prijavljeni korisnik može poslati poruku podršci direktno iz aplikacije.
+Nakon pokretanja, korisnik se registruje (ime, prezime, korisničko ime, lozinka, profilna fotografija) ili se prijavljuje na postojeći nalog. Poslije prijave otvara se glavna strana sa koje se:
 
-## 🛠️ Administratorska aplikacija (JSP)
+- unose licencni ključevi kojima se otključavaju pojedine igre,
+- pokreću otključane igre,
+- prati broj bodova na profilu,
+- pregleda rang lista rezultata po igrama,
+- izvozi kompletna istorija odigranih partija u CSV fajl.
 
-Zasebna prijava (nalog koji se ne kreira kroz aplikaciju, već direktno u bazi). Nakon prijave, dostupne su tri sekcije:
+Svaki novoregistrovani korisnik dobija **10 početnih bodova**, a bodovi se dijele između svih igara — mogu biti i negativni.
 
-- **Kategorije** — CRUD nad kategorijama ponuda i njihovim specifičnim atributima.
-- **Korisnici** — CRUD nad korisničkim nalozima web shop aplikacije.
-- **Statistika** — pregled logova backend aplikacije, sa filtriranjem po nivou logovanja (INFO/DEBUG/WARN/ERROR...) i vremenskom periodu.
+---
 
-Implementirana je servlet-centričnim **Model 2** pristupom: jedan servlet (`AdministratorController`) prima sve akcije, priprema podatke u sesijskim beans-ovima i prosljeđuje ih odgovarajućoj JSP stranici.
+## 🔑 Sistem ključeva i licenciranje igara
 
-## 💬 Aplikacija za korisničku podršku (JSP)
+Da bi se igra pokrenula prvi put, korisnik mora unijeti ključ namijenjen toj igri. Ključ je niz od 16 cifara u 4 grupe odvojene crticom (npr. `1111-1111-1111-1111`), a njegov tip trajanja određuje koliko dugo igra ostaje aktivna:
 
-Takođe zasebna prijava, potpuno odvojena od administratorskog naloga (drugi korisnik, druga uloga — nalog se, kao i administratorski, kreira direktno u bazi). Operater vidi tabelu svih poruka korisnika; otvaranjem poruke njen status prelazi u "pročitana"; na poruku se odgovara slanjem mail-a korisniku; poruke se mogu pretraživati po sadržaju.
-
-## 🔐 Autentifikacija, autorizacija i uloge
-
-- Lozinke se heširaju **BCrypt** algoritmom (i za korisnike web shop-a i za administratorske/podrška naloge).
-- Pristup je zaštićen **JWT** tokenima (`io.jsonwebtoken`), sa filterom koji presreće svaki zahtjev (`JwtAuthenticationFilter`) i bez server-side sesije (stateless).
-- Modelovano je pet uloga: `GOST`, `REGISTROVANI` (registrovan, ali nije aktivirao nalog), `VERIFIKOVANI` (aktivan korisnik web shop-a), `ADMINISTRATOR` i `PODRSKA`.
-- Administratorski i podrška nalog čuvaju se u istoj tabeli (`administrator`), razlikuju se preko atributa uloge — u skladu sa zahtjevom da se ti nalozi ne otvaraju kroz samu aplikaciju, već unosom direktno u bazu.
-
-## 🗄️ Model podataka (pregled entiteta)
-
-| Entitet | Opis |
+| Trajanje | Enum vrijednost |
 |---|---|
-| `Korisnik` | Nalog korisnika web shop-a (lični podaci, avatar, lozinka, PIN, uloga) |
-| `Administrator` | Administratorski / podrška nalog (razlikovan poljem uloge) |
-| `Kategorija` | Kategorija ponuda (npr. nekretnine, vozila...) |
-| `Specifikacija` | Atribut specifičan za kategoriju (npr. "sprat" za nekretnine) |
-| `Proizvod` | Ponuda — naslov, opis, cijena, stanje, lokacija, status (`AKTIVAN`/`ZAVRSEN`), kategorija, vlasnik |
-| `ProizvodSpecifikacija` | Vrijednost konkretnog atributa za konkretnu ponudu |
-| `ProizvodKomentar` | Pitanje/komentar na ponudi, vezan za korisnika i ponudu |
-| `Kupovina` | Zabilježena kupovina — kupac, prodavac, ponuda, način plaćanja |
-| `Placanje` | Podaci o plaćanju (broj kartice ili naziv kurirske službe) |
-| `PorukaKorisnickePodrske` | Poruka poslata podršci, sa statusom pročitanosti i eventualnim odgovorom |
+| 1 sat | `SAT` |
+| 1 dan | `DAN` |
+| 7 dana | `SEDMICA` |
+| Neograničeno | `NEOGRANICENO` |
+
+Kada korisnik unese ispravan i dostupan ključ, on se trajno vezuje za njegovo korisničko ime i mijenja status u `AKTIVAN`. Nakon isteka trajanja ili ručnog otkazivanja igre, ključ prelazi u status `ISKORIŠĆEN` i više se ne može ponovo iskoristiti — ni od istog, ni od drugog korisnika. Set demonstracionih ključeva (za sve tri implementirane igre, u sve četiri varijante trajanja) generiše se i serijalizuje pomoću pomoćne klase `KreiranjeKjuca`.
 
 ---
 
-## 💻 Tehnologije po modulu
+## 🕹️ Igre
 
-| Modul | Ključne tehnologije |
+### 1. Pogodi broj
+Aplikacija zamisli broj između 1 i 100, a korisnik ima **5 pokušaja** da ga pogodi uz povratnu informaciju "veći/manji". Nema gubitka bodova za promašaj — pogotkom se osvaja `100 / broj_pokušaja` bodova.
+
+### 2. Kviz
+Korisniku se postavlja **5 nasumično odabranih pitanja** iz banke od 15+ pitanja (`Lista pitanja.txt`), svako sa po 3 ponuđena odgovora. Tačan odgovor nosi +20 bodova, netačan -30 bodova, a savršen rezultat (5/5) donosi dodatnih +50 bodova bonusa.
+
+### 3. Loto
+Za pokretanje igre korisnik ulaže **100 bodova**. Bira 7 različitih brojeva u opsegu 1–70, nakon čega aplikacija na slučajan način izvlači 20 brojeva. Za svaki pogođeni broj se dobija `redni_broj_pogotka × 10` bodova, a pogodak svih 7 brojeva donosi dodatni bonus od 100 bodova.
+
+### 4. Moj broj *(planirano, nije implementirano)*
+U glavnoj strani postoji dugme i predviđena stavka na rang listi za ovu igru, ali njena logika (`akcijaMojBroj`, `infoMojBroj`) je za sada prazna — ostavljena kao mjesto za buduću nadogradnju.
+
+---
+
+## ⚖️ "Pametno" balansiranje rezultata
+
+Zanimljivost implementacije: aplikacija blago koriguje ishod partije za iskusnije igrače kako bi dugoročni prosjek ostao fer. Kod korisnika koji su odigrali više od 3 partije i imaju preko 40% uspješnosti:
+
+- u igri **Pogodi broj**, ako bi peti (poslednji) pokušaj bio pogodak, aplikacija — samo ako je to i dalje moguće bez odavanja trika (broj +1 ili -1 od traženog nije već bio unesen) — u posljednjem trenutku "pomjeri" traženi broj za jedan i javi promašaj;
+- u igri **Loto**, brojevima koji nose 30, 50 i 60 bodova daje se 50% šanse da, čak i ako ih je korisnik pogodio u početnom izvlačenju, budu zamijenjeni drugim brojem prije prikaza rezultata.
+
+Cilj ove mehanike je da prosječan broj izgubljenih bodova u ovim igrama bude oko 40% veći od prosječnog broja osvojenih, umjesto da igrač sistematski profitira.
+
+---
+
+## 👤 Korisnički nalozi i bodovi
+
+- Registracija zahtijeva jedinstveno korisničko ime, lozinku dužu od 4 karaktera (uz potvrdu lozinke) i profilnu fotografiju.
+- Lozinke se **nikad ne čuvaju u čistom tekstu**: heširaju se algoritmom `PBKDF2WithHmacSHA512` (10 000 iteracija, 256-bitni ključ) uz nasumično generisanu so, i tek tako kodovane u Base64 upisuju u `Lista korisnika.txt`.
+- Nalog i bodovi se čuvaju nezavisno od trenutne sesije, tako da se stanje profila zadržava između pokretanja aplikacije.
+
+---
+
+## 📊 Statistika, rang lista i izvoz podataka
+
+- Za svaku igru posebno se prikazuje rang lista top 10 rezultata (pozicija, ime igrača, datum, broj bodova), sortirana silazno po broju osvojenih bodova.
+- Kompletna istorija svih odigranih partija (svih korisnika) može se izvesti u CSV fajl jednim klikom, sa kolonama: korisničko ime, vrsta igre, datum igranja, broj poena.
+
+---
+
+## 💾 Perzistencija podataka
+
+Aplikacija ne koristi bazu podataka — sve se čuva na fajl-sistemu, u folderima koji se nalaze uz izvršnu aplikaciju (folder `app/` u repozitorijumu):
+
+| Putanja | Sadržaj |
 |---|---|
-| Frontend | Angular, Angular Material, RxJS, TypeScript |
-| Backend | Spring Boot 3, Spring Data JPA (Hibernate), Spring Security, JWT (`jjwt`), Spring Mail, ModelMapper, MySQL |
-| Administratorska aplikacija | Jakarta Servlet/JSP (Model 2), Gson, BCrypt |
-| Korisnička podrška | Jakarta Servlet/JSP (Model 2) |
-| Baza podataka | MySQL (šema se generiše automatski preko Hibernate `ddl-auto=update`, bez procedura, funkcija i okidača) |
+| `Lista korisnika/Lista korisnika.txt` | Korisnički nalozi (ime, prezime, korisničko ime, so, heš lozinke, putanja do slike) |
+| `Slike korisnika/` | Profilne fotografije korisnika |
+| `Bodovi korisnika/Bodovi korisnika.ser` | Trenutni broj bodova po korisničkom imenu (serijalizovana mapa) |
+| `Lista kljuceva/Lista kljuceva.ser` | Svi licencni ključevi i njihov status (serijalizovana mapa) |
+| `Lista pitanja/Lista pitanja.txt` | Banka pitanja za kviz |
+| `Rang lista/Rang lista.ser` | Istorija svih odigranih partija, za rang liste |
+| `Statistika/` | CSV izvještaji koje korisnik sačuva |
+
+Greške tokom rada se bilježe u `Zabiljeske/log.xml` pomoću `java.util.logging.FileHandler`.
+
+---
+
+## 🖥️ Pregled grafičkog interfejsa (GUI)
+
+Aplikacija je izgrađena pomoću **JavaFX**-a (FXML + CSS), sa zasebnim prozorom za svaki korak: prijavu, registraciju, glavnu stranu, unos ključa, informacije o igri i svaku pojedinačnu igru.
+
+[![Registracija korisnika](https://github.com/VukovicSvetozar/console-games-collection/raw/main/assets/2.PNG)](/VukovicSvetozar/console-games-collection/blob/main/assets/2.PNG)
+
+[![Igra Pogodi broj](https://github.com/VukovicSvetozar/console-games-collection/raw/main/assets/6.png)](/VukovicSvetozar/console-games-collection/blob/main/assets/6.png)
+[![Igra Kviz](https://github.com/VukovicSvetozar/console-games-collection/raw/main/assets/8.png)](/VukovicSvetozar/console-games-collection/blob/main/assets/8.png)
+
+[![Igra Loto](https://github.com/VukovicSvetozar/console-games-collection/raw/main/assets/9.png)](/VukovicSvetozar/console-games-collection/blob/main/assets/9.png)
+[![Rang lista i statistika](https://github.com/VukovicSvetozar/console-games-collection/raw/main/assets/10.png)](/VukovicSvetozar/console-games-collection/blob/main/assets/10.png)
+
+> Dodatni snimci ekrana (unos ključa, informacije o igri, izvoz u CSV...) nalaze se u folderu [`assets/`](assets).
+
+---
+
+## 💻 Tehnologije i alati
+
+- **Jezik:** Java
+- **GUI biblioteka:** JavaFX (FXML + CSS stilizacija)
+- **Bezbjednost:** `javax.crypto` — PBKDF2WithHmacSHA512 heširanje lozinki uz nasumičnu so
+- **Perzistencija:** Java serijalizacija (`.ser`), tekstualni i CSV fajlovi
+- **Logovanje:** `java.util.logging` sa upisom u XML fajl
+- **Razvojno okruženje:** Eclipse (bez Maven/Gradle build sistema)
 
 ---
 
@@ -85,72 +128,44 @@ Takođe zasebna prijava, potpuno odvojena od administratorskog naloga (drugi kor
 
 ### Preduslovi
 
-- Java 17 i Maven (ili korišćenje priloženog `mvnw`)
-- Node.js i Angular CLI
-- MySQL server
-- Servletski kontejner (npr. Apache Tomcat) za dvije JSP aplikacije
+- Instaliran **Java JDK**
+- Preuzet **JavaFX SDK** (nije uključen u sam JDK od verzije 11 naviše)
 
-### 1. Baza podataka
+### Uvoz i pokretanje
 
-Kreirajte praznu MySQL bazu (npr. `webshopapp`). Šema (tabele) će se automatski generisati pri prvom pokretanju backend-a.
+1. Klonirajte repozitorijum i uvezite folder `app` kao postojeći projekat u Eclipse (ili drugo IDE po izboru).
+2. U konfiguraciji pokretanja (Run Configuration / VM Options) dodajte JavaFX module:
 
-### 2. Backend (WebShopAppBackend/webshop)
-
-U `src/main/resources/application.properties` podesite **svoje** vrijednosti (ne koristite vrijednosti iz repozitorijuma — vidi napomenu ispod):
-
-```properties
-spring.datasource.url=jdbc:mysql://localhost:3306/webshopapp
-spring.datasource.username=<vaš_korisnik>
-spring.datasource.password=<vaša_lozinka>
-
-spring.mail.username=<vaš_mail>
-spring.mail.password=<vaša_app_lozinka_za_mail>
-
-application.security.jwt.secret-key=<vaš_sopstveni_tajni_ključ>
+```
+--module-path /putanja/do/javafx-sdk/lib --add-modules javafx.controls,javafx.fxml
 ```
 
-Pokrenite: `./mvnw spring-boot:run` (backend se podiže na portu `8888`).
-
-Nakon prvog pokretanja, ručno unesite red(ove) u tabelu `administrator` za administratorski i za podrška nalog (uz BCrypt heš lozinke) — kroz aplikaciju se ovi nalozi ne kreiraju, u skladu sa zadatkom.
-
-### 3. Frontend (WebShopAppFrontend/web-shop-app)
-
-```bash
-npm install
-ng serve
-```
-
-Aplikacija je dostupna na `http://localhost:4200` i poziva backend na `http://localhost:8888`.
-
-### 4. Administratorska aplikacija i aplikacija za podršku
-
-Build-ujte oba Maven projekta (`AdministratorskaAplikacija`, `KorisnickaPodrska`) u `.war` i deploy-ujte ih na Tomcat (podrazumijevano na `http://localhost:8080/...`). Obje aplikacije komuniciraju sa istim backend-om na portu `8888`.
-
----
-
-## ⚠️ Napomena o bezbjednosti
-
-`application.properties` i `ConnectionPool.properties` u ovom repozitorijumu sadrže **stvarne, upisane kredencijale** (lozinku za MySQL, mail nalog i app-lozinku za slanje mail-a, tajni ključ za JWT). Pošto je repozitorijum javan, ove vrijednosti treba smatrati kompromitovanim:
-
-- promijenite lozinku MySQL `root` naloga i mail app-lozinku što prije,
-- generišite nov JWT tajni ključ,
-- ubuduće ovakve vrijednosti čuvajte kroz promjenljive okruženja (environment variables) ili lokalni fajl dodat u `.gitignore`, a u repozitorijumu ostavite samo primjer (npr. `application-example.properties`) sa praznim/izmišljenim vrijednostima.
+3. **Važno:** postavite radni direktorijum (Working Directory) konfiguracije pokretanja na folder `app/`. Aplikacija čita i upisuje podatke (korisnici, ključevi, bodovi, pitanja...) na relativne putanje u odnosu na radni direktorijum, pa pokretanje iz pogrešnog foldera onemogućava učitavanje tih fajlova.
+4. Pokrenite klasu `igralica.application.PokretanjeAplikacije`.
 
 ---
 
 ## 📁 Struktura projekta
 
 ```
-web-shop-app/
-├── WebShopAppFrontend/web-shop-app/   → Angular aplikacija (kupci i prodavci)
-├── WebShopAppBackend/webshop/         → Spring Boot REST API (zajednički za sve klijente)
-├── AdministratorskaAplikacija/        → JSP aplikacija za administratora
-├── KorisnickaPodrska/                 → JSP aplikacija za korisničku podršku
-└── Tekst projekta/Zadatak.pdf         → tekst projektnog zadatka
+app/
+├── src/igralica/
+│   ├── application/   → ulazna tačka aplikacije
+│   ├── controller/    → JavaFX kontroleri (po jedan za svaki ekran/igru)
+│   ├── dialogs/       → dijalozi (registracija, obavještenja)
+│   ├── model/         → domenski model (Korisnik, Igra, Kljuc, PitanjaZaKviz)
+│   ├── utility/       → pomoćne klase (heširanje, CSV, logovanje, putanje)
+│   ├── view/          → FXML definicije ekrana
+│   └── style/         → CSS i slike
+├── Lista korisnika/, Slike korisnika/, Bodovi korisnika/,
+│   Lista kljuceva/, Lista pitanja/, Rang lista/, Statistika/
+│                     → podaci aplikacije (vidi tabelu perzistencije)
+docs/                 → specifikacija zahtjeva, UML dijagrami, napomene o balansiranju
+assets/               → snimci ekrana za ovaj README
 ```
 
 ---
 
-## 👤 Autor
+## 👥 Autori
 
-ETFBL_IP Web Shop je razvijen kao projektni zadatak iz predmeta **Internet programiranje** (decembar 2022), na **Elektrotehničkom fakultetu Univerziteta u Banjoj Luci**, autora **Svetozara Vukovića**.
+Igralica je razvijena kao semestralni projekat na **Elektrotehničkom fakultetu Univerziteta u Banjoj Luci** (Grupa 13, 2018), autora **Svetozara Vukovića** i **Daniela Crnovčića**.
